@@ -10,20 +10,20 @@ class BaseNoteTestCase(TestCase):
         self.author = get_user_model().objects.create_user(
             username='author',
             password='password123',
-            email='author@example.com'
+            email='author@example.com',
         )
 
         self.not_author = get_user_model().objects.create_user(
             username='not_author',
             password='password123',
-            email='not_author@example.com'
+            email='not_author@example.com',
         )
 
         # Базовые данные формы
         self.form_data = {
             'title': 'Test Note',
             'text': 'This is a test note',
-            'slug': 'test-note'
+            'slug': 'test-note',
         }
 
         # Создаем заметку
@@ -41,7 +41,7 @@ class BaseNoteTestCase(TestCase):
             'title': 'Test Note',
             'text': 'This is a test note',
             'slug': 'test-note',
-            'author': self.author
+            'author': self.author,
         }
         defaults.update(kwargs)
         return Note.objects.create(**defaults)

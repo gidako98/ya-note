@@ -6,11 +6,10 @@ from django.urls import reverse
 from .test_utils.base_test_case import BaseNoteTestCase
 
 
-class TEpRDGGnaYbJGTz4gMcj99yqt65ajcAY4B(BaseNoteTestCase):
+class TestRedirectsForAnonymousUsers(BaseNoteTestCase):
     def setUp(self):
         # Используем заметку из базового класса
         super().setUp()
-        # Создаем анонимного клиента
         self.anonymous_client = Client()
 
     def test_redirects(self):
@@ -35,7 +34,7 @@ class TEpRDGGnaYbJGTz4gMcj99yqt65ajcAY4B(BaseNoteTestCase):
                     response,
                     expected_url,
                     status_code=302,
-                    target_status_code=200
+                    target_status_code=200,
                 )
 
     def test_home_page_accessibility(self):
@@ -51,10 +50,9 @@ class TestPagesAvailability(BaseNoteTestCase):
         basic_urls = [
             'notes:list',
             'notes:add',
-            'notes:success'
+            'notes:success',
         ]
 
-        # Проверяем для обоих клиентов
         for client in [self.author_client, self.not_author_client]:
             with self.subTest(client=client):
                 for name in basic_urls:
@@ -64,16 +62,16 @@ class TestPagesAvailability(BaseNoteTestCase):
                         self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_note_specific_pages_availability(self):
-        # Определяем тестовые случаи для страниц конкретной заметки
+        # Определяем тестовые случаи для заметки
         test_cases = [
-            (self.not_author_client, HTTPStatus.NOT_FOUND),  # Клиент не-автора
-            (self.author_client, HTTPStatus.OK)  # Клиент автора
+            (self.not_author_client, HTTPStatus.NOT_FOUND),
+            (self.author_client, HTTPStatus.OK),
         ]
 
         note_specific_urls = [
             'notes:detail',
             'notes:edit',
-            'notes:delete'
+            'notes:delete',
         ]
 
         for client, expected_status in test_cases:
@@ -81,14 +79,13 @@ class TestPagesAvailability(BaseNoteTestCase):
                 with self.subTest(
                     client=client,
                     name=name,
-                    expected_status=expected_status
+                    expected_status=expected_status,
                 ):
                     url = reverse(name, args=(self.note.slug,))
                     response = client.get(url)
                     self.assertEqual(response.status_code, expected_status)
 
     def test_note_creation(self):
-        # Проверяем корректность создания заметки
         self.assertEqual(self.note.title, 'Test Note')
         self.assertEqual(self.note.author, self.author)
         self.assertTrue(self.note.slug)

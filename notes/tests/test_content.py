@@ -4,11 +4,11 @@ from notes.forms import NoteForm
 from .test_utils.base_test_case import BaseNoteTestCase
 
 
-class TEpRDGGnaYbJGTz4gMcj99yqt65ajcAY4B(BaseNoteTestCase):
+class TestNotesListForDifferentUsers(BaseNoteTestCase):
     def test_notes_list_for_different_users(self):
         test_cases = [
             (self.author_client, True),
-            (self.not_author_client, False)
+            (self.not_author_client, False),
         ]
 
         for client, note_in_list in test_cases:
@@ -23,7 +23,7 @@ class TestPagesContainForm(BaseNoteTestCase):
     def test_pages_contains_form(self):
         test_cases = [
             ('notes:add', None),
-            ('notes:edit', (self.note.slug,))
+            ('notes:edit', (self.note.slug,)),
         ]
 
         for name, args in test_cases:
